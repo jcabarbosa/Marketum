@@ -1,7 +1,7 @@
-# ShopMaster - Sistema de gestão de lojas online
+# Marketum - Sistema de gestão de lojas online
 
 Projeto desenvolvido em C# no ambito da unidade curricular de Programação Orientada a Objetos (IPCA).
-O ShopMaster é um sistema de gestão para lojas online que permite gerir, de forma organizada, produtos, stocks, clientes, marcas, vendas e campanhas.
+O Marketum é um sistema de gestão para lojas online que permite gerir, de forma organizada, produtos, stocks, clientes, marcas, vendas e campanhas.
 
 ## Objetivos
   - Aplicar uma estrutura em camadas para permitir a escalabilidade do projeto
@@ -10,14 +10,14 @@ O ShopMaster é um sistema de gestão para lojas online que permite gerir, de fo
   - Incluir tratamento de logs e exceções e incluir testes unitarios com cobertura mínima de 50%
 
 ## Estrutura
-  ShopMaster/
-- ShopMaster.Domain // Contém as classes do projeto
-- ShopMaster.Services // Implementa a lógica de negócio
-- ShopMaster.Persistence // Leitura e escrita de dados em ficheiros
-- ShopMaster.UI // Interface do sistema
-- ShopMaster.Tests // Testes unitários
+  Marketum/
+- Marketum.Domain // Contém as classes do projeto
+- Marketum.Services // Implementa a lógica de negócio
+- Marketum.Persistence // Leitura e escrita de dados em ficheiros
+- Marketum.UI // Interface do sistema
+- Marketum.Tests // Testes unitários
 
-## Tecnologias usadas
+## Tecnologias e ferramentas usadas
 
 ## Autor
 João Barbosa
