@@ -12,5 +12,15 @@ namespace Marketum.Domain
         public int Stock { get; set; }
         public int CategoryId { get; set; }
         public int BrandId { get; set; }
+
+        public Product() { }
+
+        public Product(int id, string name, decimal price, int stock)
+        {
+            Id = id;
+            Name = name;
+            Price = price;
+            Stock = stock;
+        }
     }
 }
