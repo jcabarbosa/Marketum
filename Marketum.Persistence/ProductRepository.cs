@@ -28,7 +28,7 @@ namespace Marketum.Persistence
             return new List<Product>(_products);
         }
 
-        public Product GetById(int id)
+        public Product? GetById(int id)
         {
             return _products.FirstOrDefault(p => p.Id == id);
         }

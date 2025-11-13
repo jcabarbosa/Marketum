@@ -9,6 +9,6 @@ namespace Marketum.Services
     {
         bool Register(string username, string password, UserRole role);
 
-        Account Login(string username, string password);
+        Account? Login(string username, string password);
     }
 }

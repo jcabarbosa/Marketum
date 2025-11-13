@@ -6,6 +6,6 @@ namespace Marketum.Persistence
     {
         Product Add(Product product);
         List<Product> GetAll();
-        Product GetById(int id);
+        Product? GetById(int id);
     }
 }

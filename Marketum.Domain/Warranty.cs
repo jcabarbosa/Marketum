@@ -8,6 +8,6 @@ namespace Marketum.Domain
         public int Id { get; set; }
         public int ProductId { get; set; }
         public int DurationMonths { get; set; }
-        public string Terms { get; set; }
+        public string Terms { get; set; } = string.Empty;   
     }
 }

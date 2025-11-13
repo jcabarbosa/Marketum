@@ -29,7 +29,7 @@ namespace Marketum.Services
         /// Autentica um utilizador verificando as credenciais
         /// </summary>
         /// <returns>Objeto Account com o Role para decisão bidirecional, ou null se falhar</returns>
-        public Account Login(string username, string password)
+        public Account? Login(string username, string password)
         {
             var account = _repository.GetByUsername(username);
             if (account == null)

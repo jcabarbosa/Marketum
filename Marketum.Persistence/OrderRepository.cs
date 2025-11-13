@@ -59,7 +59,8 @@ namespace Marketum.Persistence
         /// </summary>
         private void SaveToFile()
         {
-            var lines = _orders.Select(o => $"{o.Id};{o.CustomerId};{o.OrderDate:yyyy-MM-dd HH:mm:ss};{o.TotalAmount}");
+            // Adicionado o CultureInfo.InvariantCulture no TotalAmount para garantir que usa ponto e não vírgula
+            var lines = _orders.Select(o => $"{o.Id};{o.CustomerId};{o.OrderDate:yyyy-MM-dd HH:mm:ss};{o.TotalAmount.ToString(System.Globalization.CultureInfo.InvariantCulture)}");
             File.WriteAllLines(_filePath, lines);
         }
     }

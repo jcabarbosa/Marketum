@@ -6,6 +6,6 @@ namespace Marketum.Persistence
     {
         Client Add(Client client);
         List<Client> GetAll();
-        Client GetById(int id);
+        Client? GetById(int id);
     }
 }

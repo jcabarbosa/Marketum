@@ -15,7 +15,7 @@ namespace Marketum.Persistence
             _accounts = LoadFromFile();
         }
 
-        public Account GetByUsername(string username)
+        public Account? GetByUsername(string username)
         {
             return _accounts.FirstOrDefault(a => a.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
         }

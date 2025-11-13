@@ -28,7 +28,7 @@ namespace Marketum.Persistence
             return new List<Client>(_clients);
         }
 
-        public Client GetById(int id)
+        public Client? GetById(int id)
         {
             return _clients.FirstOrDefault(c => c.Id == id);
         }
