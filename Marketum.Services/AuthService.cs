@@ -3,6 +3,9 @@ using Marketum.Persistence;
 
 namespace Marketum.Services
 {
+    /// <summary>
+    /// Implementação do serviço de autenticação
+    /// </summary>
     public class AuthService : IAuthService
     {
         private readonly IAccountRepository _repository;
@@ -22,6 +25,10 @@ namespace Marketum.Services
             return true;
         }
 
+        /// <summary>
+        /// Autentica um utilizador verificando as credenciais
+        /// </summary>
+        /// <returns>Objeto Account com o Role para decisão bidirecional, ou null se falhar</returns>
         public Account Login(string username, string password)
         {
             var account = _repository.GetByUsername(username);

@@ -2,6 +2,9 @@ using System;
 
 namespace Marketum.Domain
 {
+    /// <summary>
+    /// Representa uma campanha promocional
+    /// </summary>
     public class Campaign
     {
         public int Id { get; set; }

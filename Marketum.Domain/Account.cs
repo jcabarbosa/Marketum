@@ -1,5 +1,8 @@
 namespace Marketum.Domain
 {
+    /// <summary>
+    /// Representa uma conta de utilizador no sistema.
+    /// </summary>
     public class Account
     {
         public int Id { get; set; }

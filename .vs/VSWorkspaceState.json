@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Marketum.Domain"
+    "\\Marketum.Domain",
+    "\\Marketum.Persistence",
+    "\\Marketum.Services"
   ],
-  "SelectedNode": "\\Marketum.Domain\\Product.cs",
+  "SelectedNode": "\\Marketum.Domain\\Account.cs",
   "PreviewInSolutionExplorer": false
 }

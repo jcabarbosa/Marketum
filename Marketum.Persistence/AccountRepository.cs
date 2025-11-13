@@ -2,6 +2,9 @@ using Marketum.Domain;
 
 namespace Marketum.Persistence
 {
+    /// <summary>
+    /// Repositório para gestão de contas de utilizador com persistência em ficheiro.
+    /// </summary>
     public class AccountRepository : IAccountRepository
     {
         private readonly string _filePath = "accounts.txt";
@@ -30,6 +33,9 @@ namespace Marketum.Persistence
             return new List<Account>(_accounts);
         }
 
+        /// <summary>
+        /// Carrega as contas do ficheiro de texto.
+        /// </summary>
         private List<Account> LoadFromFile()
         {
             if (!File.Exists(_filePath))
@@ -52,6 +58,9 @@ namespace Marketum.Persistence
             return accounts;
         }
 
+        /// <summary>
+        /// Guarda as contas no ficheiro de texto.
+        /// </summary>
         private void SaveToFile()
         {
             var lines = _accounts.Select(a => $"{a.Id};{a.Username};{a.Password};{(int)a.Role}");

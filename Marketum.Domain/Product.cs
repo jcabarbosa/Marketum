@@ -1,5 +1,8 @@
 namespace Marketum.Domain
 {
+    /// <summary>
+    /// Representa um produto no sistema.
+    /// </summary>
     public class Product
     {
         public int Id { get; set; }
@@ -7,7 +10,7 @@ namespace Marketum.Domain
         public string Description { get; set; }
         public decimal Price { get; set; }
         public int Stock { get; set; }
-        public string Category { get; set; } = string.Empty;
-        public string Brand { get; set; } = string.Empty;
+        public int CategoryId { get; set; }
+        public int BrandId { get; set; }
     }
 }
