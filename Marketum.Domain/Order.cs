@@ -11,16 +11,30 @@ namespace Marketum.Domain
         public int Id { get; set; }
         public int CustomerId { get; set; }
         public DateTime OrderDate { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
+
         public List<OrderItem> Items { get; set; } = new List<OrderItem>();
+
+        public int? CampaignId { get; set; }
+        public Campaign? Campaign { get; set; }
+
         public decimal TotalAmount => CalculateTotal();
+
+
 
         private decimal CalculateTotal()
         {
             decimal total = 0;
+
             foreach (var item in Items)
-            {
                 total += item.Quantity * item.Price;
+
+            if (Campaign != null)
+            {
+                decimal discount = total * (Campaign.DiscountPercentage / 100m);
+                total -= discount;
             }
+
             return total;
         }
     }
