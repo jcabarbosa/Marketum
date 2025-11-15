@@ -15,11 +15,6 @@ namespace Marketum.Persistence
             _accounts = LoadFromFile();
         }
 
-        public Account? GetByUsername(string username)
-        {
-            return _accounts.FirstOrDefault(a => a.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
-        }
-
         public Account Add(Account account)
         {
             account.Id = _accounts.Count > 0 ? _accounts.Max(a => a.Id) + 1 : 1;
@@ -28,10 +23,16 @@ namespace Marketum.Persistence
             return account;
         }
 
+        public Account? GetByUsername(string username)
+        {
+            return _accounts.FirstOrDefault(a => a.Username == username);
+        }
+
         public List<Account> GetAll()
         {
             return new List<Account>(_accounts);
         }
+
 
         /// <summary>
         /// Carrega as contas do ficheiro de texto.
@@ -42,19 +43,23 @@ namespace Marketum.Persistence
                 return new List<Account>();
 
             var accounts = new List<Account>();
+
             foreach (var line in File.ReadAllLines(_filePath))
             {
                 var parts = line.Split(';');
-                if (parts.Length == 4)
+
+                if (parts.Length == 5)
                 {
                     accounts.Add(new Account(
-                        int.Parse(parts[0]),
-                        parts[1],
-                        parts[2],
-                        (UserRole)int.Parse(parts[3])
+                        id: int.Parse(parts[0]),
+                        employeeId: int.Parse(parts[1]),
+                        username: parts[2],
+                        password: parts[3],
+                        role: Enum.Parse<UserRole>(parts[4])
                     ));
                 }
             }
+
             return accounts;
         }
 
@@ -63,7 +68,9 @@ namespace Marketum.Persistence
         /// </summary>
         private void SaveToFile()
         {
-            var lines = _accounts.Select(a => $"{a.Id};{a.Username};{a.Password};{(int)a.Role}");
+            var lines = _accounts.Select(a =>
+                $"{a.Id};{a.EmployeeId};{a.Username};{a.Password};{a.Role}");
+
             File.WriteAllLines(_filePath, lines);
         }
     }

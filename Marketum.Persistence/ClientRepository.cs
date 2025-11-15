@@ -51,7 +51,7 @@ namespace Marketum.Persistence
                     {
                         Id = int.Parse(parts[0]),
                         Name = parts[1],
-                        TaxNr = int.Parse(parts[2]),
+                        TaxNr = parts[2],
                         Email = parts[3],
                         Phone = parts[4],
                         Address = parts[5]

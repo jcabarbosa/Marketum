@@ -7,7 +7,7 @@ namespace Marketum.Services
     /// </summary>
     public interface IAuthService
     {
-        bool Register(string username, string password, UserRole role);
+        bool Register(int employeeId, string username, string password, UserRole role);
 
         Account? Login(string username, string password);
     }

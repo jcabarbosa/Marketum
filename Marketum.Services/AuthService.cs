@@ -15,20 +15,27 @@ namespace Marketum.Services
             _repository = repository;
         }
 
-        public bool Register(string username, string password, UserRole role)
+        public bool Register(int employeeId, string username, string password, UserRole role)
         {
             if (_repository.GetByUsername(username) != null)
                 return false;
 
-            var newAccount = new Account(0, username, password, role);
+            var newAccount = new Account(
+                id: 0,
+                employeeId: employeeId,
+                username: username,
+                password: password,
+                role: role
+            );
+
             _repository.Add(newAccount);
             return true;
         }
 
         /// <summary>
-        /// Autentica um utilizador verificando as credenciais
+        /// Autentica o utilizador verificando as credenciais
         /// </summary>
-        /// <returns>Objeto Account com o Role para decisão bidirecional, ou null se falhar</returns>
+        /// <returns>Account do utilizador ou null se falhar</returns>
         public Account? Login(string username, string password)
         {
             var account = _repository.GetByUsername(username);
