@@ -4,8 +4,10 @@ namespace Marketum.Persistence
 {
     public interface IEmployeeRepository
     {
-        Employee? GetByUsername(string username);
-        List<Employee> GetAll();
         Employee Add(Employee employee);
+        Employee? GetById(int id);
+        List<Employee> GetAll();
+        void Update(Employee employee);
+        void Delete(int id);
     }
 }

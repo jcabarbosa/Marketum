@@ -1,4 +1,7 @@
 using Marketum.Domain;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Marketum.Persistence
 {
@@ -33,6 +36,29 @@ namespace Marketum.Persistence
             return _products.FirstOrDefault(p => p.Id == id);
         }
 
+        public void Update(Product product)
+        {
+            var existing = _products.FirstOrDefault(p => p.Id == product.Id);
+            if (existing == null) return;
+
+            existing.Name = product.Name;
+            existing.Brand = product.Brand;
+            existing.Price = product.Price;
+            existing.Stock = product.Stock;
+            existing.CategoryId = product.CategoryId;
+
+            SaveToFile();
+        }
+
+        public void Delete(int id)
+        {
+            var p = _products.FirstOrDefault(x => x.Id == id);
+            if (p == null) return;
+
+            _products.Remove(p);
+            SaveToFile();
+        }
+
         /// <summary>
         /// Carrega os produtos do ficheiro de texto.
         /// </summary>
@@ -45,17 +71,16 @@ namespace Marketum.Persistence
             foreach (var line in File.ReadAllLines(_filePath))
             {
                 var parts = line.Split(';');
-                if (parts.Length == 7)
+                if (parts.Length == 6)
                 {
                     products.Add(new Product
                     {
                         Id = int.Parse(parts[0]),
                         Name = parts[1],
-                        Description = parts[2],
+                        Brand = parts[2],
                         Price = decimal.Parse(parts[3]),
                         Stock = int.Parse(parts[4]),
-                        CategoryId = int.Parse(parts[5]),
-                        BrandId = int.Parse(parts[6])
+                        CategoryId = int.Parse(parts[5])
                     });
                 }
             }
@@ -67,7 +92,7 @@ namespace Marketum.Persistence
         /// </summary>
         private void SaveToFile()
         {
-            var lines = _products.Select(p => $"{p.Id};{p.Name};{p.Description};{p.Price};{p.Stock};{p.CategoryId};{p.BrandId}");
+            var lines = _products.Select(p => $"{p.Id};{p.Name};{p.Brand};{p.Price};{p.Stock};{p.CategoryId}");
             File.WriteAllLines(_filePath, lines);
         }
     }

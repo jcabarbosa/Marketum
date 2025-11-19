@@ -1,4 +1,7 @@
 using Marketum.Domain;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Marketum.Persistence
 {
@@ -12,9 +15,17 @@ namespace Marketum.Persistence
             _employees = LoadFromFile();
         }
 
-        public Employee? GetByUsername(string username)
+        public Employee Add(Employee emp)
         {
-            return _employees.FirstOrDefault(e => e.Username == username);
+            emp.Id = _employees.Count > 0 ? _employees.Max(e => e.Id) + 1 : 1;
+            _employees.Add(emp);
+            SaveToFile();
+            return emp;
+        }
+
+        public Employee? GetById(int id)
+        {
+            return _employees.FirstOrDefault(e => e.Id == id);
         }
 
         public List<Employee> GetAll()
@@ -22,47 +33,63 @@ namespace Marketum.Persistence
             return new List<Employee>(_employees);
         }
 
-        public Employee Add(Employee emp)
-            emp.Id = _employees.Count > 0 ? _employees.Max(e => e.Id) + 1 : 1;
-            _employees.Add(emp);
-            SaveToFile();
-            return emp;
-    }
+        public void Update(Employee employee)
+        {
+            var existing = GetById(employee.Id);
+            if (existing == null) return;
 
-    private List<Employee> LoadFromFile()
+            existing.Name = employee.Name;
+            existing.TaxNr = employee.TaxNr;
+            existing.Email = employee.Email;
+            existing.Phone = employee.Phone;
+            existing.Address = employee.Address;
+            existing.RoleTitle = employee.RoleTitle;
+
+            SaveToFile();
+        }
+
+        public void Delete(int id)
+        {
+            var emp = GetById(id);
+            if (emp == null) return;
+
+            _employees.Remove(emp);
+            SaveToFile();
+        }
+
+        private List<Employee> LoadFromFile()
         {
             if (!File.Exists(_filePath))
                 return new List<Employee>();
 
-            var employees = new List<Employee>();
+            var list = new List<Employee>();
 
             foreach (var line in File.ReadAllLines(_filePath))
             {
-                var parts = line.Split(';');
-                if (parts.Length == 7)
+                var p = line.Split(';');
+                if (p.Length >= 7)
                 {
-                    employees.Add(new Employee
+                    list.Add(new Employee
                     {
-                        Id = int.Parse(parts[0],
-                        Name = parts[1],
-                        TaxNr = parts[2],
-                        Email = parts[3],
-                        Phone = parts[4],
-                        Adress = parts[5],
-                        Role = parts[6].Split('|')[0],
-                        Username = parts[6].Split('|')[1],
-                        Password = parts[6].Split('|')[2]
+                        Id = int.Parse(p[0]),
+                        Name = p[1],
+                        TaxNr = p[2],
+                        Email = p[3],
+                        Phone = p[4],
+                        Address = p[5],
+                        RoleTitle = p[6]
                     });
                 }
             }
 
-            return employees;
+            return list;
         }
 
         private void SaveToFile()
         {
             var lines = _employees.Select(e =>
-                $"{e.Id};{e.Name};{e.TaxNr};{e.Email};{e.Phone};{e.Adress};{e.Role}|{e.Username}|{e.Password}");
+                $"{e.Id};{e.Name};{e.TaxNr};{e.Email};{e.Phone};{e.Address};{e.RoleTitle}");
+
             File.WriteAllLines(_filePath, lines);
         }
     }

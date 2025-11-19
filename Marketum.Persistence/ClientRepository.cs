@@ -33,6 +33,30 @@ namespace Marketum.Persistence
             return _clients.FirstOrDefault(c => c.Id == id);
         }
 
+        public void Update(Client client)
+        {
+            var existing = _clients.FirstOrDefault(c => c.Id == client.Id);
+            if (existing == null) return;
+
+            existing.Name = client.Name;
+            existing.TaxNr = client.TaxNr;
+            existing.Email = client.Email;
+            existing.Phone = client.Phone;
+            existing.Address = client.Address;
+
+            SaveToFile();
+        }
+
+        public void Delete(int id)
+        {
+            var c = _clients.FirstOrDefault(x => x.Id == id);
+            if (c == null) return;
+
+            _clients.Remove(c);
+            SaveToFile();
+        }
+
+
         /// <summary>
         /// Carrega os clientes do ficheiro de texto.
         /// </summary>

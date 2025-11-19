@@ -4,9 +4,9 @@ namespace Marketum.Domain
 	/// </summary>
 	public class Employee : Person
 	{
-		public string RoleTitle { get; set; }
+		public string RoleTitle { get; set; } = string.Empty;	
 
-		public override string GetContactSummary()
+        public override string GetContactSummary()
 		{
 			return $"Funcionário: {Name}, Cargo: {RoleTitle}";
 		}

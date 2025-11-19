@@ -1,5 +1,7 @@
 using Marketum.Domain;
 using Marketum.Persistence;
+using Marketum.Domain.Exceptions;
+
 
 namespace Marketum.Services
 {

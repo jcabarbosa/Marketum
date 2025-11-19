@@ -1,4 +1,6 @@
 using Marketum.Domain;
+using Marketum.Domain.Exceptions;
+
 
 namespace Marketum.Services
 {
