@@ -16,5 +16,7 @@ namespace Marketum.Services
         void ConfirmOrder(int orderId);
         void CancelOrder(int orderId);
         void MarkAsPaid(int orderId);
+        void ShipOrder(int orderId);
+        void CompleteOrder(int orderId);
     }
 }

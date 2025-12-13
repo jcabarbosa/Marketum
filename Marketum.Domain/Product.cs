@@ -10,7 +10,8 @@ namespace Marketum.Domain
         public decimal Price { get; set; }
         public int Stock { get; set; }
         public int CategoryId { get; set; }
-        public string Brand { get; set; } = string.Empty;
+        public int BrandId { get; set; }
+        public int? WarrantyId { get; set; }
 
         public Product() { }
     }

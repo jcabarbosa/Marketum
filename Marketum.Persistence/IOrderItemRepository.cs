@@ -7,5 +7,6 @@ namespace Marketum.Persistence
     {
         void AddItems(int orderId, List<OrderItem> items);
         List<OrderItem> GetItemsByOrderId(int orderId);
+        List<OrderItem> GetAllItems();
     }
 }

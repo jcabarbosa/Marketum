@@ -14,30 +14,31 @@ namespace Marketum.Services
             _repository = repository;
         }
 
-        public Product AddProduct(string name, string brand, decimal price, int stock, int categoryId)
+        public Product AddProduct(string name, int brandId, decimal price, int stock, int categoryId, int? warrantyId = null)
         {
             if (string.IsNullOrWhiteSpace(name))
-                throw new ValidationException("Introduza um nome v·lido.");
+                throw new ValidationException("Introduza um nome v√°lido.");
 
-            if (string.IsNullOrWhiteSpace(brand))
-                throw new ValidationException("Intoduza uma marca v·lida.");
+            if (brandId <= 0)
+                throw new ValidationException("BrandId inv√°lido.");
 
             if (price <= 0)
-                throw new ValidationException("O preÁo tem de ser maior que zero.");
+                throw new ValidationException("O pre√ßo tem de ser maior que zero.");
 
             if (stock < 0)
-                throw new ValidationException("O stock n„o pode ser negativo.");
+                throw new ValidationException("O stock n√£o pode ser negativo.");
 
             if (categoryId <= 0)
-                throw new ValidationException("CategoryId inv·lido.");
+                throw new ValidationException("CategoryId inv√°lido.");
 
             var product = new Product
             {
                 Name = name,
-                Brand = brand,
+                BrandId = brandId,
                 Price = price,
                 Stock = stock,
-                CategoryId = categoryId
+                CategoryId = categoryId,
+                WarrantyId = warrantyId
             };
 
             return _repository.Add(product);
@@ -53,7 +54,7 @@ namespace Marketum.Services
             var product = _repository.GetById(id);
 
             if (product == null)
-                throw new NotFoundException($"Produto com o ID {id} n„o encontrado.");
+                throw new NotFoundException($"Produto com o ID {id} n√£o encontrado.");
 
             return product;
         }
@@ -65,7 +66,7 @@ namespace Marketum.Services
             var newStock = product.Stock + amount;
 
             if (newStock < 0)
-                throw new ValidationException("O stock n„o pode ficar negativo.");
+                throw new ValidationException("O stock n√£o pode ficar negativo.");
 
             product.Stock = newStock;
             _repository.Update(product);
@@ -76,7 +77,7 @@ namespace Marketum.Services
             var product = _repository.GetById(id);
 
             if (product == null)
-                throw new NotFoundException($"Produto com o ID {id} n„o existe.");
+                throw new NotFoundException($"Produto com o ID {id} n√£o existe.");
 
             _repository.Delete(id);
         }

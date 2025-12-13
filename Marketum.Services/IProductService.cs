@@ -6,7 +6,7 @@ namespace Marketum.Services
 {
     public interface IProductService
     {
-        Product AddProduct(string name, string brand, decimal price, int stock, int categoryId);
+        Product AddProduct(string name, int brandId, decimal price, int stock, int categoryId, int? warrantyId = null);
         List<Product> GetAllProducts();
         Product GetById(int id);
         void UpdateStock(int productId, int amount);

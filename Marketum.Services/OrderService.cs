@@ -119,10 +119,12 @@ namespace Marketum.Services
         public List<Order> GetAllOrders()
         {
             var orders = _orderRepo.GetAll();
+            var allItems = _orderItemRepo.GetAllItems();
+            var itemsByOrderId = allItems.GroupBy(i => i.OrderId).ToDictionary(g => g.Key, g => g.ToList());
 
             foreach (var order in orders)
             {
-                order.Items = _orderItemRepo.GetItemsByOrderId(order.Id);
+                order.Items = itemsByOrderId.ContainsKey(order.Id) ? itemsByOrderId[order.Id] : new List<OrderItem>();
 
                 if (order.CampaignId.HasValue)
                 {
@@ -169,6 +171,26 @@ namespace Marketum.Services
                 throw new ValidationException("Apenas encomendas criadas podem ser marcadas como pagas.");
             
             order.Status = OrderStatus.Paid;
+            _orderRepo.Update(order);
+        }
+
+        public void ShipOrder(int orderId)
+        {
+            var order = GetOrderById(orderId);
+            if (order.Status != OrderStatus.Processing)
+                throw new ValidationException("Apenas encomendas em processamento podem ser enviadas.");
+            
+            order.Status = OrderStatus.Shipped;
+            _orderRepo.Update(order);
+        }
+
+        public void CompleteOrder(int orderId)
+        {
+            var order = GetOrderById(orderId);
+            if (order.Status != OrderStatus.Shipped)
+                throw new ValidationException("Apenas encomendas enviadas podem ser concluídas.");
+            
+            order.Status = OrderStatus.Completed;
             _orderRepo.Update(order);
         }
 

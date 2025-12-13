@@ -24,13 +24,33 @@ namespace Marketum.Persistence
 
             return File.ReadAllLines(_filePath)
                        .Select(line => line.Split(';'))
-                       .Where(p => int.Parse(p[0]) == orderId)
+                       .Where(p => p.Length >= 5 && int.TryParse(p[0], out int oid) && oid == orderId)
                        .Select(p => new OrderItem
                        {
-                           ProductId = int.Parse(p[1]),
+                           OrderId = int.TryParse(p[0], out int oid) ? oid : 0,
+                           ProductId = int.TryParse(p[1], out int pid) ? pid : 0,
                            ProductName = p[2],
-                           Price = decimal.Parse(p[3], System.Globalization.CultureInfo.InvariantCulture),
-                           Quantity = int.Parse(p[4])
+                           Price = decimal.TryParse(p[3], System.Globalization.CultureInfo.InvariantCulture, out decimal price) ? price : 0,
+                           Quantity = int.TryParse(p[4], out int qty) ? qty : 0
+                       })
+                       .ToList();
+        }
+
+        public List<OrderItem> GetAllItems()
+        {
+            if (!File.Exists(_filePath))
+                return new List<OrderItem>();
+
+            return File.ReadAllLines(_filePath)
+                       .Select(line => line.Split(';'))
+                       .Where(p => p.Length >= 5)
+                       .Select(p => new OrderItem
+                       {
+                           OrderId = int.TryParse(p[0], out int oid) ? oid : 0,
+                           ProductId = int.TryParse(p[1], out int pid) ? pid : 0,
+                           ProductName = p[2],
+                           Price = decimal.TryParse(p[3], System.Globalization.CultureInfo.InvariantCulture, out decimal price) ? price : 0,
+                           Quantity = int.TryParse(p[4], out int qty) ? qty : 0
                        })
                        .ToList();
         }
