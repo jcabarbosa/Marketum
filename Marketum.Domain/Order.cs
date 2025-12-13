@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Marketum.Domain
 {
     /// <summary>
-    /// Representa uma encomenda no sistema.
+    /// Representa uma encomenda no sistema
     /// </summary>
     public class Order
     {
@@ -12,15 +12,27 @@ namespace Marketum.Domain
         public int CustomerId { get; set; }
         public DateTime OrderDate { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
+        public int EmployeeId { get; set; }
+
+        /// <summary>
+        /// Estado atual da encomenda
+        /// </summary>
+        public OrderStatus Status { get; set; } = OrderStatus.Created;
 
         public List<OrderItem> Items { get; set; } = new List<OrderItem>();
 
         public int? CampaignId { get; set; }
         public Campaign? Campaign { get; set; }
 
+        /// <summary>
+        /// Calcula o valor total da encomenda aplicando descontos de campanha se existirem
+        /// </summary>
         public decimal TotalAmount => CalculateTotal();
 
-
+        public void SetStatus(OrderStatus newStatus)
+        {
+            Status = newStatus;
+        }
 
         private decimal CalculateTotal()
         {
@@ -40,12 +52,12 @@ namespace Marketum.Domain
     }
 
     /// <summary>
-    /// Representa um item de uma encomenda.
+    /// Item individual de uma encomenda
     /// </summary>
     public class OrderItem
     {
         public int ProductId { get; set; }
-        public string ProductName { get; set; } = string.Empty; 
+        public string ProductName { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public int Quantity { get; set; }
     }

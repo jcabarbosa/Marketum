@@ -28,6 +28,21 @@ namespace Marketum.Persistence
             return new List<Order>(_orders);
         }
 
+        public Order? GetById(int id)
+        {
+            return _orders.FirstOrDefault(o => o.Id == id);
+        }
+
+        public void Update(Order order)
+        {
+            var existingOrder = _orders.FirstOrDefault(o => o.Id == order.Id);
+            if (existingOrder != null)
+            {
+                existingOrder.Status = order.Status;
+                SaveToFile();
+            }
+        }
+
         /// <summary>
         /// Carrega as encomendas do ficheiro de texto.
         /// </summary>
@@ -40,15 +55,22 @@ namespace Marketum.Persistence
             foreach (var line in File.ReadAllLines(_filePath))
             {
                 var parts = line.Split(';');
-                if (parts.Length == 4)
+                if (parts.Length >= 4)
                 {
-                    orders.Add(new Order
+                    var order = new Order
                     {
                         Id = int.Parse(parts[0]),
                         CustomerId = int.Parse(parts[1]),
                         OrderDate = DateTime.Parse(parts[2])
-                        // TotalAmount é calculado automaticamente pela propriedade
-                    });
+                    };
+                    
+                    if (parts.Length >= 5 && int.TryParse(parts[4], out int employeeId))
+                        order.EmployeeId = employeeId;
+                    
+                    if (parts.Length >= 6 && Enum.TryParse<OrderStatus>(parts[5], out OrderStatus status))
+                        order.Status = status;
+                    
+                    orders.Add(order);
                 }
             }
             return orders;
@@ -59,8 +81,7 @@ namespace Marketum.Persistence
         /// </summary>
         private void SaveToFile()
         {
-            // Adicionado o CultureInfo.InvariantCulture no TotalAmount para garantir que usa ponto e não vírgula
-            var lines = _orders.Select(o => $"{o.Id};{o.CustomerId};{o.OrderDate:yyyy-MM-dd HH:mm:ss};{o.TotalAmount.ToString(System.Globalization.CultureInfo.InvariantCulture)}");
+            var lines = _orders.Select(o => $"{o.Id};{o.CustomerId};{o.OrderDate:yyyy-MM-dd HH:mm:ss};{o.TotalAmount.ToString(System.Globalization.CultureInfo.InvariantCulture)};{o.EmployeeId};{o.Status}");
             File.WriteAllLines(_filePath, lines);
         }
     }

@@ -31,6 +31,7 @@ namespace Marketum.Services
 
         public Order CreateOrder(
             int clientId,
+            int employeeId,
             UserRole employeeRole,
             PaymentMethod paymentMethod,
             List<(int productId, int quantity)> items)
@@ -40,7 +41,7 @@ namespace Marketum.Services
 
             var client = _clientRepo.GetById(clientId);
             if (client == null)
-                throw new NotFoundException("Cliente n�o encontrado.");
+                throw new NotFoundException("Cliente não encontrado.");
 
             if (items == null || items.Count == 0)
                 throw new ValidationException("A encomenda deve conter produtos.");
@@ -51,11 +52,11 @@ namespace Marketum.Services
             foreach (var (productId, qty) in items)
             {
                 if (qty <= 0)
-                    throw new ValidationException("Quantidade inv�lida.");
+                    throw new ValidationException("Quantidade inválida.");
 
                 var product = _productRepo.GetById(productId);
                 if (product == null)
-                    throw new NotFoundException($"Produto {productId} n�o encontrado.");
+                    throw new NotFoundException($"Produto {productId} não encontrado.");
 
                 if (product.Stock < qty)
                     throw new ValidationException($"Stock insuficiente para '{product.Name}'.");
@@ -88,11 +89,13 @@ namespace Marketum.Services
             var order = new Order
             {
                 CustomerId = clientId,
+                EmployeeId = employeeId,
                 OrderDate = DateTime.Now,
                 PaymentMethod = paymentMethod,
                 Items = orderItems,
                 CampaignId = campaign?.Id,
-                Campaign = campaign
+                Campaign = campaign,
+                Status = OrderStatus.Created
             };
 
             order = _orderRepo.Add(order);
@@ -137,6 +140,44 @@ namespace Marketum.Services
             }
 
             return orders;
+        }
+
+        public void ConfirmOrder(int orderId)
+        {
+            var order = GetOrderById(orderId);
+            if (order.Status != OrderStatus.Created)
+                throw new ValidationException("Apenas encomendas criadas podem ser confirmadas.");
+            
+            order.Status = OrderStatus.Processing;
+            _orderRepo.Update(order);
+        }
+
+        public void CancelOrder(int orderId)
+        {
+            var order = GetOrderById(orderId);
+            if (order.Status == OrderStatus.Shipped || order.Status == OrderStatus.Completed)
+                throw new ValidationException("Não é possível cancelar encomendas enviadas ou concluídas.");
+            
+            order.Status = OrderStatus.Cancelled;
+            _orderRepo.Update(order);
+        }
+
+        public void MarkAsPaid(int orderId)
+        {
+            var order = GetOrderById(orderId);
+            if (order.Status != OrderStatus.Created)
+                throw new ValidationException("Apenas encomendas criadas podem ser marcadas como pagas.");
+            
+            order.Status = OrderStatus.Paid;
+            _orderRepo.Update(order);
+        }
+
+        private Order GetOrderById(int orderId)
+        {
+            var order = _orderRepo.GetById(orderId);
+            if (order == null)
+                throw new NotFoundException("Encomenda não encontrada.");
+            return order;
         }
     }
 }
