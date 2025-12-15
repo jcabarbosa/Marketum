@@ -5,8 +5,8 @@ namespace Marketum.Domain
     /// </summary>
     public enum UserRole
     {
-        Admin,
-        Employee,  // funcionario normal
-        StockManager,  // getsor de stock
+        Admin = 1,
+        Employee = 2,  // funcionario normal
+        StockManager = 3,  // getsor de stock
     }
 }

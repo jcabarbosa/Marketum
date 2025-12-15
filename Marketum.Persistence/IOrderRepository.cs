@@ -8,5 +8,6 @@ namespace Marketum.Persistence
         List<Order> GetAll();
         Order? GetById(int id);
         void Update(Order order);
+        void Remove(int id);
     }
 }

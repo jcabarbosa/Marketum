@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Compile Update="AccountEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="AccountListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="BrandEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="BrandListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="CampaignCreateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="CampaignListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="CategoryEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="CategoryListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ClientEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ClientListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="EmployeeEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="EmployeeListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormsBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="OrderCreateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="OrderDetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="OrderEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="OrderListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ProductEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ProductListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="StockForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="WarrantyEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="WarrantyListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>

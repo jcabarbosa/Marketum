@@ -49,5 +49,10 @@ namespace Marketum.Services
 
             return account;
         }
+        
+        public List<Account> GetAllAccounts()
+        {
+            return _repository.GetAll();
+        }
     }
 }

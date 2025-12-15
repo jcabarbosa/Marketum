@@ -33,9 +33,9 @@ namespace Marketum.Persistence
             return _warranties.FirstOrDefault(w => w.Id == id);
         }
 
-        public Warranty? GetByProductId(int productId)
+        public List<Warranty> GetActive()
         {
-            return _warranties.FirstOrDefault(w => w.ProductId == productId);
+            return _warranties.Where(w => w.IsActive).ToList();
         }
 
         public void Update(Warranty warranty)
@@ -43,9 +43,10 @@ namespace Marketum.Persistence
             var existing = _warranties.FirstOrDefault(w => w.Id == warranty.Id);
             if (existing == null) return;
 
-            existing.ProductId = warranty.ProductId;
+            existing.Name = warranty.Name;
             existing.DurationMonths = warranty.DurationMonths;
             existing.Description = warranty.Description;
+            existing.IsActive = warranty.IsActive;
 
             SaveToFile();
         }
@@ -68,14 +69,15 @@ namespace Marketum.Persistence
             foreach (var line in File.ReadAllLines(_filePath))
             {
                 var parts = line.Split(';');
-                if (parts.Length >= 4)
+                if (parts.Length >= 5)
                 {
                     warranties.Add(new Warranty
                     {
                         Id = int.TryParse(parts[0], out int id) ? id : 0,
-                        ProductId = int.TryParse(parts[1], out int productId) ? productId : 0,
+                        Name = parts[1],
                         DurationMonths = int.TryParse(parts[2], out int duration) ? duration : 0,
-                        Description = parts[3]
+                        Description = parts[3],
+                        IsActive = bool.TryParse(parts[4], out bool isActive) ? isActive : true
                     });
                 }
             }
@@ -84,7 +86,7 @@ namespace Marketum.Persistence
 
         private void SaveToFile()
         {
-            var lines = _warranties.Select(w => $"{w.Id};{w.ProductId};{w.DurationMonths};{w.Description}");
+            var lines = _warranties.Select(w => $"{w.Id};{w.Name};{w.DurationMonths};{w.Description};{w.IsActive}");
             File.WriteAllLines(_filePath, lines);
         }
     }

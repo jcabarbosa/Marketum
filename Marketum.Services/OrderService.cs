@@ -194,12 +194,21 @@ namespace Marketum.Services
             _orderRepo.Update(order);
         }
 
-        private Order GetOrderById(int orderId)
+        public Order GetOrderById(int orderId)
         {
             var order = _orderRepo.GetById(orderId);
             if (order == null)
                 throw new NotFoundException("Encomenda não encontrada.");
             return order;
+        }
+
+        public void RemoveOrder(int orderId)
+        {
+            var order = GetOrderById(orderId);
+            if (order.Status == OrderStatus.Shipped || order.Status == OrderStatus.Completed)
+                throw new ValidationException("Não é possível remover encomendas enviadas ou concluídas.");
+            
+            _orderRepo.Remove(orderId);
         }
     }
 }

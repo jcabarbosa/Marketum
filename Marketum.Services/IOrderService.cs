@@ -13,6 +13,8 @@ namespace Marketum.Services
             List<(int productId, int quantity)> items);
 
         List<Order> GetAllOrders();
+        Order GetOrderById(int orderId);
+        void RemoveOrder(int orderId);
         void ConfirmOrder(int orderId);
         void CancelOrder(int orderId);
         void MarkAsPaid(int orderId);

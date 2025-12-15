@@ -4,10 +4,12 @@ namespace Marketum.Services
 {
     public interface IWarrantyService
     {
-        Warranty CreateWarranty(int productId, int durationMonths, string description);
-        void AssociateWarrantyToProduct(int warrantyId, int productId);
-        Warranty? GetWarrantyByProductId(int productId);
+        Warranty CreateWarranty(string name, int durationMonths, string description);
         List<Warranty> GetAllWarranties();
+        List<Warranty> GetActiveWarranties();
+        Warranty? GetById(int id);
+        void UpdateWarranty(Warranty warranty);
         void RemoveWarranty(int warrantyId);
+        void DeactivateWarranty(int warrantyId);
     }
 }

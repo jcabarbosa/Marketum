@@ -43,6 +43,16 @@ namespace Marketum.Persistence
             }
         }
 
+        public void Remove(int id)
+        {
+            var order = _orders.FirstOrDefault(o => o.Id == id);
+            if (order != null)
+            {
+                _orders.Remove(order);
+                SaveToFile();
+            }
+        }
+
         /// <summary>
         /// Carrega as encomendas do ficheiro de texto.
         /// </summary>
@@ -69,6 +79,9 @@ namespace Marketum.Persistence
                     
                     if (parts.Length >= 6 && Enum.TryParse<OrderStatus>(parts[5], out OrderStatus status))
                         order.Status = status;
+                        
+                    if (parts.Length >= 7 && Enum.TryParse<PaymentMethod>(parts[6], out PaymentMethod paymentMethod))
+                        order.PaymentMethod = paymentMethod;
                     
                     orders.Add(order);
                 }
@@ -81,7 +94,7 @@ namespace Marketum.Persistence
         /// </summary>
         private void SaveToFile()
         {
-            var lines = _orders.Select(o => $"{o.Id};{o.CustomerId};{o.OrderDate:yyyy-MM-dd HH:mm:ss};{o.TotalAmount.ToString(System.Globalization.CultureInfo.InvariantCulture)};{o.EmployeeId};{o.Status}");
+            var lines = _orders.Select(o => $"{o.Id};{o.CustomerId};{o.OrderDate:yyyy-MM-dd HH:mm:ss};{o.TotalAmount.ToString(System.Globalization.CultureInfo.InvariantCulture)};{o.EmployeeId};{o.Status};{o.PaymentMethod}");
             File.WriteAllLines(_filePath, lines);
         }
     }

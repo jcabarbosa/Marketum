@@ -7,19 +7,16 @@ namespace Marketum.Services
     public class WarrantyService : IWarrantyService
     {
         private readonly IWarrantyRepository _warrantyRepo;
-        private readonly IProductRepository _productRepo;
 
-        public WarrantyService(IWarrantyRepository warrantyRepo, IProductRepository productRepo)
+        public WarrantyService(IWarrantyRepository warrantyRepo)
         {
             _warrantyRepo = warrantyRepo;
-            _productRepo = productRepo;
         }
 
-        public Warranty CreateWarranty(int productId, int durationMonths, string description)
+        public Warranty CreateWarranty(string name, int durationMonths, string description)
         {
-            var product = _productRepo.GetById(productId);
-            if (product == null)
-                throw new NotFoundException("Produto não encontrado.");
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ValidationException("Nome da garantia é obrigatório.");
 
             if (durationMonths <= 0)
                 throw new ValidationException("Duração da garantia deve ser maior que zero.");
@@ -29,36 +26,39 @@ namespace Marketum.Services
 
             var warranty = new Warranty
             {
-                ProductId = productId,
+                Name = name,
                 DurationMonths = durationMonths,
-                Description = description
+                Description = description,
+                IsActive = true
             };
 
             return _warrantyRepo.Add(warranty);
         }
 
-        public void AssociateWarrantyToProduct(int warrantyId, int productId)
-        {
-            var warranty = _warrantyRepo.GetById(warrantyId);
-            if (warranty == null)
-                throw new NotFoundException("Garantia não encontrada.");
-
-            var product = _productRepo.GetById(productId);
-            if (product == null)
-                throw new NotFoundException("Produto não encontrado.");
-
-            product.WarrantyId = warrantyId;
-            _productRepo.Update(product);
-        }
-
-        public Warranty? GetWarrantyByProductId(int productId)
-        {
-            return _warrantyRepo.GetByProductId(productId);
-        }
-
         public List<Warranty> GetAllWarranties()
         {
             return _warrantyRepo.GetAll();
+        }
+
+        public List<Warranty> GetActiveWarranties()
+        {
+            return _warrantyRepo.GetActive();
+        }
+
+        public Warranty? GetById(int id)
+        {
+            return _warrantyRepo.GetById(id);
+        }
+
+        public void UpdateWarranty(Warranty warranty)
+        {
+            if (string.IsNullOrWhiteSpace(warranty.Name))
+                throw new ValidationException("Nome da garantia é obrigatório.");
+
+            if (warranty.DurationMonths <= 0)
+                throw new ValidationException("Duração da garantia deve ser maior que zero.");
+
+            _warrantyRepo.Update(warranty);
         }
 
         public void RemoveWarranty(int warrantyId)
@@ -68,6 +68,16 @@ namespace Marketum.Services
                 throw new NotFoundException("Garantia não encontrada.");
 
             _warrantyRepo.Delete(warrantyId);
+        }
+
+        public void DeactivateWarranty(int warrantyId)
+        {
+            var warranty = _warrantyRepo.GetById(warrantyId);
+            if (warranty == null)
+                throw new NotFoundException("Garantia não encontrada.");
+
+            warranty.IsActive = false;
+            _warrantyRepo.Update(warranty);
         }
     }
 }

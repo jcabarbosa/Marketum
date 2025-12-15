@@ -12,5 +12,7 @@ namespace Marketum.Services
         bool Register(int employeeId, string username, string password, UserRole role);
 
         Account? Login(string username, string password);
+        
+        List<Account> GetAllAccounts();
     }
 }

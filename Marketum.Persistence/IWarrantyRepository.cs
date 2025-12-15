@@ -6,8 +6,8 @@ namespace Marketum.Persistence
     {
         Warranty Add(Warranty warranty);
         List<Warranty> GetAll();
+        List<Warranty> GetActive();
         Warranty? GetById(int id);
-        Warranty? GetByProductId(int productId);
         void Update(Warranty warranty);
         void Delete(int id);
     }
