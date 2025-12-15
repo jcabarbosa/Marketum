@@ -7,7 +7,7 @@ namespace Marketum.Persistence
     /// </summary>
     public class WarrantyRepository : IWarrantyRepository
     {
-        private readonly string _filePath = "warranties.txt";
+        private readonly string _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "warranties.txt");
         private List<Warranty> _warranties;
 
         public WarrantyRepository()

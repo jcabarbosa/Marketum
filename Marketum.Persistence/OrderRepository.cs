@@ -7,7 +7,7 @@ namespace Marketum.Persistence
     /// </summary>
     public class OrderRepository : IOrderRepository
     {
-        private readonly string _filePath = "orders.txt";
+        private readonly string _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "orders.txt");
         private List<Order> _orders;
 
         public OrderRepository()

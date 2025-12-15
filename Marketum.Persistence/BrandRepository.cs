@@ -1,11 +1,10 @@
 using Marketum.Domain;
-using System.Text.Json;
 
 namespace Marketum.Persistence
 {
     public class BrandRepository : IBrandRepository
     {
-        private readonly string _filePath = "brands.txt";
+        private readonly string _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "brands.txt");
         private List<Brand> _brands;
         private int _nextId;
 
@@ -61,13 +60,19 @@ namespace Marketum.Persistence
             {
                 try
                 {
-                    var json = File.ReadAllText(_filePath);
-                    var data = JsonSerializer.Deserialize<List<Brand>>(json);
-                    if (data != null)
+                    foreach (var line in File.ReadAllLines(_filePath))
                     {
-                        _brands = data;
-                        _nextId = _brands.Any() ? _brands.Max(b => b.Id) + 1 : 1;
+                        var parts = line.Split(';');
+                        if (parts.Length >= 2)
+                        {
+                            _brands.Add(new Brand
+                            {
+                                Id = int.Parse(parts[0]),
+                                Name = parts[1]
+                            });
+                        }
                     }
+                    _nextId = _brands.Any() ? _brands.Max(b => b.Id) + 1 : 1;
                 }
                 catch { }
             }
@@ -77,8 +82,8 @@ namespace Marketum.Persistence
         {
             try
             {
-                var json = JsonSerializer.Serialize(_brands, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText(_filePath, json);
+                var lines = _brands.Select(b => $"{b.Id};{b.Name}");
+                File.WriteAllLines(_filePath, lines);
             }
             catch { }
         }

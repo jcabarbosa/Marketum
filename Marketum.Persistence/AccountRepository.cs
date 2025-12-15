@@ -7,7 +7,7 @@ namespace Marketum.Persistence
     /// </summary>
     public class AccountRepository : IAccountRepository
     {
-        private readonly string _filePath = "accounts.txt";
+        private readonly string _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "accounts.txt");
         private List<Account> _accounts;
 
         public AccountRepository()

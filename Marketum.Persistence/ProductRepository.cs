@@ -10,7 +10,7 @@ namespace Marketum.Persistence
     /// </summary>
     public class ProductRepository : IProductRepository
     {
-        private readonly string _filePath = "products.txt";
+        private readonly string _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "products.txt");
         private List<Product> _products;
 
         public ProductRepository()

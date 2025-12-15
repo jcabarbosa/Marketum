@@ -7,7 +7,7 @@ namespace Marketum.Persistence
     /// </summary>
     public class ClientRepository : IClientRepository
     {
-        private readonly string _filePath = "clients.txt";
+        private readonly string _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "clients.txt");
         private List<Client> _clients;
 
         public ClientRepository()

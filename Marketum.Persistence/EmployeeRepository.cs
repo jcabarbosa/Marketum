@@ -7,7 +7,7 @@ namespace Marketum.Persistence
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        private readonly string _filePath = "employees.txt";
+        private readonly string _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "employees.txt");
         private List<Employee> _employees;
 
         public EmployeeRepository()

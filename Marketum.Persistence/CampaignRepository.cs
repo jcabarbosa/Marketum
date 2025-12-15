@@ -8,7 +8,7 @@ namespace Marketum.Persistence
 {
     public class CampaignRepository : ICampaignRepository
     {
-        private readonly string _filePath = "campaigns.txt";
+        private readonly string _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "campaigns.txt");
         private List<Campaign> _campaigns;
 
         public CampaignRepository()

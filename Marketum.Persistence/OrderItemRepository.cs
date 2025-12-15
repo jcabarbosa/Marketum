@@ -7,7 +7,7 @@ namespace Marketum.Persistence
 {
     public class OrderItemRepository : IOrderItemRepository
     {
-        private readonly string _filePath = "order_items.txt";
+        private readonly string _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "order_items.txt");
 
         public void AddItems(int orderId, List<OrderItem> items)
         {

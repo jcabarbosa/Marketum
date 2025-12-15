@@ -1,11 +1,10 @@
 using Marketum.Domain;
-using System.Text.Json;
 
 namespace Marketum.Persistence
 {
     public class CategoryRepository : ICategoryRepository
     {
-        private readonly string _filePath = "categories.txt";
+        private readonly string _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "categories.txt");
         private List<Category> _categories;
         private int _nextId;
 
@@ -61,13 +60,19 @@ namespace Marketum.Persistence
             {
                 try
                 {
-                    var json = File.ReadAllText(_filePath);
-                    var data = JsonSerializer.Deserialize<List<Category>>(json);
-                    if (data != null)
+                    foreach (var line in File.ReadAllLines(_filePath))
                     {
-                        _categories = data;
-                        _nextId = _categories.Any() ? _categories.Max(c => c.Id) + 1 : 1;
+                        var parts = line.Split(';');
+                        if (parts.Length >= 2)
+                        {
+                            _categories.Add(new Category
+                            {
+                                Id = int.Parse(parts[0]),
+                                Name = parts[1]
+                            });
+                        }
                     }
+                    _nextId = _categories.Any() ? _categories.Max(c => c.Id) + 1 : 1;
                 }
                 catch { }
             }
@@ -77,8 +82,8 @@ namespace Marketum.Persistence
         {
             try
             {
-                var json = JsonSerializer.Serialize(_categories, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText(_filePath, json);
+                var lines = _categories.Select(c => $"{c.Id};{c.Name}");
+                File.WriteAllLines(_filePath, lines);
             }
             catch { }
         }
