@@ -18,7 +18,11 @@ O Marketum é um sistema de gestão para lojas online que permite gerir, de form
 - Marketum.Tests // Testes unitários
 
 ## Tecnologias e ferramentas usadas
-
+- Linguagem: C# (.NET 9.0)
+- Interface: Windows Forms
+- Persistência: Ficheiros de Texto
+- IDE: Visual Studio 2022
+  
 ## Autor
 João Barbosa
 Aluno nº 14385
